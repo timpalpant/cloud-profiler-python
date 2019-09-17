@@ -74,7 +74,7 @@ class WallProfiler(object):
      but is much less likely to manifest. Users can use it at their own risk.
   """
 
-  def __init__(self, period_ms):
+  def __init__(self, period_ms=10):
     """Constructs the Wall time profiler.
 
     Args:
