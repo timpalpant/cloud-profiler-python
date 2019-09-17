@@ -38,15 +38,16 @@ class CPUProfiler(object):
     self._profile_type = 'CPU'
     self._period_ms = period_ms
 
-  def profile(self, duration_ns):
+  def profile(self, duration_secs):
     """Profiles the CPU time usage for the given duration.
 
     Args:
-      duration_ns: An integer specifying the duration to profile in nanoseconds.
+      duration_secs: An float specifying the duration to profile in seconds.
 
     Returns:
       A bytes object containing gzip-compressed profile proto.
     """
+    duration_ns = int(_NANOS_PER_SEC * duration_secs)
     traces = self._profile(duration_ns)
     return self._build_profile(duration_ns, traces)
 
