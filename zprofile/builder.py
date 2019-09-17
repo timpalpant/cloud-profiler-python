@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2018 Google LLC with subsequent modifications.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import collections
 import gzip
 import io
-from googlecloudprofiler import profile_pb2
+from zprofile import profile_pb2
 
 Func = collections.namedtuple('Func', ['name', 'filename'])
 Loc = collections.namedtuple('Loc', ['func_id', 'line_number'])

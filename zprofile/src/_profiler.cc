@@ -37,7 +37,7 @@ PyMethodDef ProfilerMethods[] = {
 #if PY_MAJOR_VERSION >= 3
 struct PyModuleDef moduledef = {
     PyModuleDef_HEAD_INIT, "_profiler",          /* name of module */
-    "Stackdriver Profiler C++ extension module", /* module documentation */
+    "zprofile C++ extension module", /* module documentation */
     -1, ProfilerMethods};
 }  // namespace
 
