@@ -26,9 +26,15 @@
 #include "clock.h"
 #include "log.h"
 
+#if PY_VERSION_HEX >= 0x03020000
+GetThreadStateFunc get_thread_state_func = PyGILState_GetThisThreadState;
+#else
+#include "compat27.h"
+GetThreadStateFunc get_thread_state_func = UnsafeGetThisThreadState;
+#endif
+
 AsyncSafeTraceMultiset *Profiler::fixed_traces_ = nullptr;
 std::atomic<int> Profiler::unknown_stack_count_;
-GetThreadStateFunc get_thread_state_func = PyGILState_GetThisThreadState;
 bool CPUProfiler::fork_handlers_registered_;
 
 namespace {
