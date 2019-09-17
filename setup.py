@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2018 Google LLC with subsequent modifications.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,18 +22,14 @@ from setuptools import Extension
 from setuptools import setup
 
 install_requires = [
-    'google-api-python-client',
-    'google-auth>=1.0.0',
-    'google-auth-httplib2',
     'protobuf',
-    'requests',
 ]
 
 ext_module = [
     Extension(
-        'googlecloudprofiler._profiler',
-        sources=glob.glob('googlecloudprofiler/src/*.cc'),
-        include_dirs=['googlecloudprofiler/src'],
+        'zprofile._profiler',
+        sources=glob.glob('zprofile/src/*.cc'),
+        include_dirs=['zprofile/src'],
         language='c++',
         extra_compile_args=['-std=c++11'],
         extra_link_args=['-std=c++11', '-static-libstdc++'])
@@ -47,20 +43,11 @@ if not (sys.platform.startswith('linux') or sys.platform.startswith('darwin')):
       'supported operating systems.\n')
   ext_module = []
 
-if sys.platform.startswith('darwin'):
-  print(
-      'Profiler Python agent has limited support for ', sys.platform, '. '
-      'Wall profiler is available with supported Python versions. '
-      'CPU profiler is not available. '
-      'Refer to the documentation for a list of supported operating '
-      'systems and Python versions.\n')
-  ext_module = []
-
 
 def get_version():
   """Read the version from __version__.py."""
 
-  with open('googlecloudprofiler/__version__.py') as fp:
+  with open('zprofile/__version__.py') as fp:
     # Do not handle exceptions from open() so setup will fail when it cannot
     # open the file
     line = fp.read()
@@ -70,23 +57,23 @@ def get_version():
       return version.group(1)
 
   raise RuntimeError(
-      'Cannot determine version from googlecloudprofiler/__init__.py.')
+      'Cannot determine version from zprofile/__init__.py.')
 
 
 setup(
-    name='google-cloud-profiler',
-    description='Stackdriver Profiler Python Agent',
+    name='zprofile',
+    description='Statistical CPU and wall-clock profilers for Python',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/GoogleCloudPlatform/cloud-profiler-python',
-    author='Google LLC',
+    url='https://github.com/timpalpant/cloud-profiler-python',
+    author='Timothy Palpant',
     version=get_version(),
     install_requires=install_requires,
     setup_requires=['wheel'],
-    packages=['googlecloudprofiler'],
+    packages=['zprofile'],
     ext_modules=ext_module,
     license='Apache License, Version 2.0',
-    keywords='google cloud profiler',
+    keywords='cloud profiler',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC with subsequent modifications.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ void Log(const char *level, const char *fmt, ...) {
   }
   if (logging == nullptr) {
     fputs(
-        "googlecloudprofiler: failed to import logging module, logging "
+        "zprofile: failed to import logging module, logging "
         "is not enabled.\n",
         stderr);
     PyGILState_Release(gil_state);

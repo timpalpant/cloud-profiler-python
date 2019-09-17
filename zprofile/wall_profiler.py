@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2018 Google LLC with subsequent modifications.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import signal
 import threading
 import time
 import timeit
-from googlecloudprofiler import builder
+from zprofile import builder
 
 # Maximum stack frames to record.
 _MAX_STACK_DEPTH = 128

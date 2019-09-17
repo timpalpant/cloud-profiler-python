@@ -1,4 +1,4 @@
-# Copyright 2018 Google LLC
+# Copyright 2018 Google LLC with subsequent modifications.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 """CPU time profiler."""
 
 import logging
-from googlecloudprofiler import _profiler
-from googlecloudprofiler import builder
+from zprofile import _profiler
+from zprofile import builder
 
 logger = logging.getLogger(__name__)
 
