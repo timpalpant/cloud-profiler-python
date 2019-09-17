@@ -21,6 +21,10 @@
 static const int64_t kNanosPerSecond = 1000 * 1000 * 1000;
 static const int64_t kNanosPerMilli = 1000 * 1000;
 
+void TimeSub(struct timespec *ts_out,
+             const struct timespec *ts_in);
+int clock_nanosleep_abstime(const struct timespec *req);
+
 // Clock interface that can be mocked for tests. The default implementation
 // delegates to the system and so is thread-safe.
 class Clock {
@@ -36,13 +40,21 @@ class Clock {
 
   // Blocks the current thread until the specified point in time.
   virtual void SleepUntil(struct timespec ts) {
+#ifdef __MACH__
+    while (clock_nanosleep_abstime(&ts) > 0) {
+#else
     while (clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &ts, nullptr) > 0) {
+#endif
     }
   }
 
   // Blocks the current thread for the specified duration.
   virtual void SleepFor(struct timespec ts) {
+#ifdef __MACH__
+    while (clock_nanosleep_abstime(&ts) > 0) {
+#else
     while (clock_nanosleep(CLOCK_MONOTONIC, 0, &ts, &ts) > 0) {
+#endif
     }
   }
 };

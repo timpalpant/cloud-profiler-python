@@ -39,3 +39,37 @@ struct timespec NanosToTimeSpec(int64_t nanos) {
   int32_t nano_seconds = nanos % kNanosPerSecond;
   return timespec{seconds, nano_seconds};
 }
+
+void TimeSub(struct timespec *ts_out,
+             const struct timespec *ts_in) {
+    /* out = in - out,
+       where in > out
+     */
+    ts_out->tv_sec = ts_in->tv_sec - ts_out->tv_sec;
+    ts_out->tv_nsec = ts_in->tv_nsec - ts_out->tv_nsec;
+    if (ts_out->tv_sec < 0) {
+        ts_out->tv_sec = 0;
+        ts_out->tv_nsec = 0;
+    } else if (ts_out->tv_nsec < 0) {
+        if (ts_out->tv_sec == 0) {
+            ts_out->tv_sec = 0;
+            ts_out->tv_nsec = 0;
+        } else {
+            ts_out->tv_sec = ts_out->tv_sec - 1;
+            ts_out->tv_nsec = ts_out->tv_nsec + kNanosPerSecond;
+        }
+    } else {}
+}
+
+// Emulate clock_nanosleep for CLOCK_MONOTONIC and TIMER_ABSTIME
+// Works on POSIX and OS X (where clock_nanosleep is not available).
+// Adapted from ChisholmKyle/PosixMachTiming (ISC).
+int clock_nanosleep_abstime(const struct timespec *req) {
+    struct timespec ts_delta;
+    int retval = clock_gettime(CLOCK_MONOTONIC, &ts_delta);
+    if (retval == 0) {
+        TimeSub(&ts_delta, req);
+        retval = nanosleep(&ts_delta, NULL);
+    }
+    return retval;
+}
