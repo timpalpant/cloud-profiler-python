@@ -1,4 +1,4 @@
-// Copyright 2018 Google LLC
+// Copyright 2018 Google LLC with subsequent modifications.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -160,7 +160,7 @@ void Profiler::Handle(int signum, siginfo_t *info, void *context) {
     PyFrameObject *frame = ts->frame;
     int num_frames = 0;
     while (frame != nullptr && num_frames < kMaxFramesToCapture) {
-      frames[num_frames].lineno = frame->f_lineno;
+      frames[num_frames].lineno = PyFrame_GetLineNumber(frame);
       frames[num_frames].py_code = frame->f_code;
       num_frames++;
       frame = frame->f_back;
