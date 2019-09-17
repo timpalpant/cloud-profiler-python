@@ -101,21 +101,21 @@ class WallProfiler(object):
     # http://man7.org/linux/man-pages/man7/signal.7.html.
     signal.siginterrupt(signal.SIGALRM, False)
 
-  def profile(self, duration_ns):
+  def profile(self, profile_duration):
     """Profiles for the given duration.
 
     This function can be called from a non-main thread. It assumes
     register_handler has been called.
 
     Args:
-      duration_ns: An integer specifying the duration to profile in nanoseconds.
+      profile_duration: An float specifying the duration to profile in seconds.
 
     Returns:
       A bytes object containing gzip-compressed profile proto.
     """
     self._reset()
 
-    profile_duration = float(duration_ns) / _NANOS_PER_SEC
+    duration_ns = int(_NANOS_PER_SEC * profile_duration)
     target_time = timeit.default_timer() + profile_duration
 
     self._start_profiling()
