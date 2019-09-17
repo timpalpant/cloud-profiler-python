@@ -16,5 +16,14 @@ Statistical (sampling) CPU and wall-clock profilers for Python, derived from [go
     from zprofile.cpu_profiler import CPUProfiler
 
     p = CPUProfiler()
-    p.profile(30)
+    pprof = p.profile(30)  # seconds
+
+    with open("profile.pprof", "wb") as f:
+      f.write(pprof)
+    ```
+
+3.  View the profile with the [`pprof` tool](https://github.com/google/pprof):
+
+    ```
+    $ go tool pprof -http localhost:8080 profile.pprof
     ```
