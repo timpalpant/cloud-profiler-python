@@ -11,9 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Python2-compatible implementation for profilers."""
 
+import atexit
 import collections
 import logging
 import signal
@@ -100,6 +100,11 @@ class WallProfiler(object):
     # Not all calls can be restarted, see
     # http://man7.org/linux/man-pages/man7/signal.7.html.
     signal.siginterrupt(signal.SIGALRM, False)
+
+    # Stop sending SIGALRM before the program exits. If SIGALRM is received
+    # during the program exit, sometimes the program exits with non-zero code
+    # 142. See b/133360821.
+    atexit.register(signal.setitimer, signal.ITIMER_REAL, 0)
 
   def profile(self, profile_duration):
     """Profiles for the given duration.
