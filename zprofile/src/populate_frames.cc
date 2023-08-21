@@ -109,7 +109,7 @@ int PopulateFrames(CallFrame *frames, PyThreadState *ts) {
   PyFrameObject *frame = ts->frame;
   int num_frames = 0;
   while (frame != nullptr && num_frames < kMaxFramesToCapture) {
-    frames[num_frames].lineno = frame->f_lineno;
+    frames[num_frames].lineno = PyFrame_GetLineNumber(frame);
     frames[num_frames].py_code = frame->f_code;
     num_frames++;
     frame = frame->f_back;
